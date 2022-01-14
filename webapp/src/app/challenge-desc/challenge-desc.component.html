@@ -1,0 +1,231 @@
+<mat-card
+  *ngIf="scrolled"
+  style="
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    z-index: 10000;
+    top: 10vh;
+    width: 70vw;
+    height: 6vh;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    margin-top: 1px;
+    transition: all 5s ease;
+  "
+>
+  <div
+    style="text-align: center; justify-content: center"
+    class="challengeName"
+  >
+    <h1
+      style="text-align: center; justify-content: center; margin-top: 13px"
+      class="challengeTitle"
+    >
+      {{ challenge.challengeName }}
+    </h1>
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      (click)="register(challenge)"
+      routerActive="active"
+      color="primary"
+    >
+      Register
+    </button>
+  </div>
+</mat-card>
+<div>
+  <mat-drawer-container autosize>
+    <div class="banner">
+      <img
+        width="100%"
+        height="100%"
+        src="{{ challenge.challengeImage }}"
+        alt="banner"
+      />
+    </div>
+
+    <mat-card class="registerCard">
+      <div class="challengeInfoDiv">
+        <mat-card class="profileImageCard">
+          <img
+            width="100%"
+            height="100%"
+            src="https://st2.depositphotos.com/1104517/11967/v/950/depositphotos_119675554-stock-illustration-male-avatar-profile-picture-vector.jpg"
+            alt="challenger profile"
+        /></mat-card>
+        <div style="display: flex; flex-direction: row">
+          <div class="challengeName">
+            <h1 class="challengeTitle">{{ challenge.challengeName }}</h1>
+            <h3 style="color: gray; font-weight: lighter">
+              <!-- {{ users[challenge.challengerId - 1].userName }} -->
+            </h3>
+          </div>
+          <div class="registerButtonDiv">
+            <button
+              mat-raised-button
+              (click)="register(challenge)"
+              routerActive="active"
+              color="primary"
+            >
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="basicInfo">
+        <div class="basicInfoCard">
+          <i class="fas fa-hourglass-half fa-lg"></i>
+          <h5>{{ challenge.endDate | date: "fullDate" }}</h5>
+        </div>
+        <span>&#124;</span>
+        <div class="basicInfoCard">
+          <i class="fas fa-rupee-sign fa-lg"></i>
+          <h5>{{ challenge.rewardPrize }}</h5>
+        </div>
+        <span>&#124;</span>
+        <div class="basicInfoCard">
+          <i class="fas fa-user-plus fa-lg"></i>
+          <h5>{{ challenge.registrations }}</h5>
+        </div>
+      </div>
+      <mat-chip-list cdkDropListOrientation="horizontal">
+        <mat-chip *ngFor="let domain of challenge.domain">
+          {{ domain }}
+        </mat-chip>
+      </mat-chip-list>
+    </mat-card>
+
+    <mat-card class="abstractCard">
+      <div class="challengeAbstract">
+        <mat-label class="challengeTitle">Abstract:</mat-label>
+        <p>
+          {{ challenge.abstraction }}
+        </p>
+      </div>
+      <div class="challengeRules">
+        <mat-label class="challengeTitle">Rules:</mat-label>
+        <p>
+          {{ challenge.rules }}
+        </p>
+      </div>
+    </mat-card>
+    <div class="smallCardsDiv">
+      <mat-card class="downloads">
+        <mat-label class="challengeTitle">Download Attachments:</mat-label>
+        <button style="margin-left: 30px" mat-stroked-button color="primary">
+          Download
+        </button>
+      </mat-card>
+      <mat-card class="downloads" style="text-align: left">
+        <mat-label class="challengeTitle"
+          >Important dates & deadlines: <br />
+          {{ challenge.endDate | date: "fullDate" }}</mat-label
+        >
+      </mat-card>
+    </div>
+  </mat-drawer-container>
+  <mat-drawer-container class="rewardsContainer">
+    <div style="margin-left: 10vw; margin-top: 60px">
+      <mat-label class="challengeTitle" style="font-size: 1.8em"
+        >| Rewards and Prizes</mat-label
+      >
+      <mat-card class="rewardBanner">
+        <div class="rewardDiv">
+          <i class="fas fa-rupee-sign fa-10x"></i>
+          <h1 style="font-size: 11vw">{{ challenge.rewardPrize }}</h1>
+        </div>
+      </mat-card>
+    </div>
+  </mat-drawer-container>
+  <mat-drawer-container class="feedBackContainer">
+    <div style="margin-left: 10vw; margin-top: 60px">
+      <mat-label class="challengeTitle" style="font-size: 1.8em"
+        >| Voice your opinion by leaving a feedback</mat-label
+      >
+      <div class="myLeftCtn">
+        <form
+          class="feedbackForm"
+          *ngIf="!isSuccessful"
+          #feedbackForm="ngForm"
+          novalidate
+          (ngSubmit)="feedbackForm.form.valid && sendFeedback()"
+        >
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              class="myInput"
+              placeholder="Your Name"
+              required
+              minlength="3"
+              maxlength="20"
+              [(ngModel)]="form.name"
+              #name="ngModel"
+            />
+            <div
+              class="alert-danger"
+              *ngIf="feedbackForm.submitted && name.invalid"
+            >
+              <div *ngIf="name.errors?.required">Name is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            <input
+              type="email"
+              name="email"
+              class="myInput"
+              placeholder="Your E-mail"
+              [(ngModel)]="form.email"
+              #email="ngModel"
+            />
+            <div
+              class="alert-danger"
+              *ngIf="feedbackForm.submitted && email.invalid"
+            >
+              <div *ngIf="email.errors?.required">Email is required</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <i class="fas fa-book" style="top: -105px"></i>
+            <textarea
+              type="text"
+              class="myInput"
+              name="subject"
+              cols="15"
+              rows="5"
+              placeholder="Write your message.."
+              [(ngModel)]="form.subject"
+              #subject="ngModel"
+            >
+            </textarea>
+            <div
+              class="alert-danger"
+              *ngIf="feedbackForm.submitted && name.invalid"
+            >
+              <div *ngIf="name.errors?.required">Write your message!</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-primary btn-block">Send</button>
+          </div>
+        </form>
+        <div class="alert alert-success" *ngIf="isSuccessful">
+          Your message has been sent
+        </div>
+      </div>
+    </div>
+  </mat-drawer-container>
+</div>

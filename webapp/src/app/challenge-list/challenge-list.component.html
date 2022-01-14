@@ -1,0 +1,98 @@
+<div class="input-group" >
+   
+    <input type="search" class="form-control rounded"  [placeholder]="searchPlaceHolder" aria-label="Search"
+      aria-describedby="search-addon" [(ngModel)]="queries.query" />
+    <button type="button" class="btn btn-outline-primary" (click)="searchClick()">search</button>
+
+
+    <!-- Voice Recognition Html Start-->
+    <div id="voiceSection" *ngIf="voiceActiveSectionDisabled; else voicesection;">
+        <button type="button" (click)="startVoiceRecognition()" id="recordButton"><i class="fa fa-microphone"></i></button>
+    </div>
+    <ng-template #voicesection>
+        <ng-container *ngIf="!voiceActiveSectionError; else failure">
+            <ng-container *ngIf="voiceText; else start">
+                <!-- <span>{{voiceText}}</span> -->
+            </ng-container>
+            <ng-template #start>
+            <ng-container
+                *ngIf="voiceActiveSectionListening; else beginning">
+                <!-- <span>Listening...</span> -->
+            </ng-container>
+            <ng-template #beginning>
+                <!-- <span>Start talking...</span> -->
+            </ng-template>
+            </ng-template>
+        </ng-container>
+        <ng-template #failure>
+            <!-- <span>Didn't catch that</span> -->
+        </ng-template>
+        <div>
+            <button id="Restart" (click)="startVoiceRecognition()"><i class="fas fa-redo"></i></button>
+            <button id="Close" (click)="closeVoiceRecognition()"><i class="fas fa-times"></i></button>
+            
+        </div>
+    </ng-template>
+    <!-- Voice Recognition Html Ends-->
+
+</div>
+
+
+<!-- domain chips -->
+<br>
+<mat-chip-list class="chipList" selectable multiple [formControl]="chipsControl">
+    <mat-chip #c="matChip" (click)="c.toggleSelected(true)" (selectionChange)="onSelectionChangeAllChip(c)">All</mat-chip>
+	<mat-chip #chip="matChip" [selected]="c.selected ? false : chip.selected" 
+    (click)="chip.toggleSelected(true)" 
+    (selectionChange)="onSelectionChange(chip,c)"
+
+    *ngFor="let option of user.domain">
+        {{option}}
+	</mat-chip>
+</mat-chip-list>
+<!-- end of domain chips -->
+<div *ngIf="subscribedDomainChallengeList.length==0" style="text-align: center; align-content: center; padding-top: 15px;"> <h2> No Results Found</h2></div>
+
+<div class="challenges" *ngFor="let challenge of subscribedDomainChallengeList">
+    <a type="button" (click)="viewChallenge(challenge)">
+        <div class="card mb-3">
+            <img class="card-img-top" src="https://assets.weforum.org/article/image/large_bg1B3jyBjInTSH2AjIgjgoER9PYwCN-BZ_BQhdeZ92s.jpg" alt="Card image cap{{ challenge.challengeImage }}" style="height:40vh; padding:0.5em">
+            <div class="card-body">
+                <h2 class="card-title" matTooltip="Name">{{challenge.challengeName}}</h2>
+                <p class="card-text" matTooltip="domains">
+                    <mat-chip-list selectable multiple>
+                        <mat-chip #chip="matChip" [selected]="c.selected ? c.selected : searchDomainChips.includes(domain)" 
+                        *ngFor="let domain of challenge.domain" >
+                            {{domain}}
+                        </mat-chip>
+                    </mat-chip-list>
+                </p>
+                <div class="basicInfo">
+                    <div class="basicInfoCard">
+                        <i class="fas fa-hourglass-half fa-lg"></i>
+                        <h5 matTooltip="last date">{{ challenge.endDate | date:'fullDate'}}</h5>
+                    </div>
+                    <span style="font-size:22px;">&#124;</span>
+                    <div class="basicInfoCard" matTooltip="reward">
+                        <i class="fas fa-rupee-sign fa-lg"></i>
+                        <h5>{{ challenge.rewardPrize }}</h5>
+                    </div>
+                    <span style="font-size:22px;">&#124;</span>
+                    <div class="basicInfoCard" matTooltip="registrations">
+                        <i class="fas fa-user-plus fa-lg"></i>
+                        <h5>{{ challenge.registrations }}</h5>
+                    </div>
+                    <span style="font-size:22px;">&#124;</span>
+                    <div class="basicInfoCard" matTooltip="views">
+                        <i class="fa fa-eye fa-lg"></i>
+                        <h5>{{ challenge.views }}</h5>
+                    </div>
+                    <span *ngIf="url=='find'" style="font-size:22px;">&#124;</span>
+                    <div *ngIf="url=='find'" class="basicInfoCard post">
+                        <h5 *ngIf="challenge.challengerName!=null" class="postedBy" [matTooltip]=challenge.challengerName>Posted By: {{ challenge.challengerName.split('@')[0] }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

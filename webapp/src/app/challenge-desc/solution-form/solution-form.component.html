@@ -1,0 +1,79 @@
+<mat-spinner *ngIf="loading" class="spinner"></mat-spinner>
+<div class="container">
+  <mat-label class="challengeTitle">| {{ challenge.challengeName }}</mat-label>
+  <div class="innerContainer">
+    <div class="item">
+      <mat-card class="challengeInfoCard">
+        <div class="scrollable">
+          <mat-label class="challengeTitle">Abstract:</mat-label>
+          <hr />
+          <p>
+            {{ challenge.abstraction }}
+          </p>
+          <mat-label class="challengeTitle">Rules:</mat-label>
+          <hr />
+          <p>
+            {{ challenge.rules }}
+          </p>
+        </div>
+      </mat-card>
+      <button
+        style="margin-left: 15vw; margin-top: 20px"
+        (click)="goBack()"
+        mat-raised-button
+        color="primary"
+      >
+        Go Back.
+      </button>
+    </div>
+    <form id="solutionForm" #solutionForm="ngForm" action="" class="item">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Solution Title</mat-label>
+        <input
+          [(ngModel)]="formData.solutionTitle"
+          name="solutionTitle"
+          matInput
+          required
+          type="text"
+          placeholder="Solution Title"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea
+          [(ngModel)]="formData.solutionDescription"
+          name="solutionDescription"
+          required
+          matInput
+          placeholder="Description"
+          rows="7"
+          cols="50"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Code Url</mat-label>
+        <input
+          [(ngModel)]="formData.codeUrl"
+          name="codeUrl"
+          matInput
+          type="url"
+          placeholder="Code Url"
+        />
+      </mat-form-field>
+
+      <input
+        type="file"
+        class="form-control"
+        style="padding: 4px"
+        accept=".pdf"
+        (change)="onFileChanged($event)"
+      />
+
+      <button (click)="submitSolution()" mat-raised-button color="primary">
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
