@@ -25,11 +25,12 @@
         <module>eureka-server</module>
         <module>spring-cloud-gateway</module>
         <module>registration-service</module>
-        <module>authenticationService</module>
+        <module>authenticationbackend</module>
         <module>challenge-create-services</module>
         <module>Solution</module>
         <module>searchService</module>
         <module>FeedbackService</module>
+        <module>Spring_Mongo</module>
     </modules>
     <dependencies>
 
@@ -69,22 +70,12 @@
         </dependency>
     </dependencies>
     <build>
+    <pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>auto-clean</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>
-                                clean
-                            </goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,6 +128,7 @@
                 <version>3.1.9</version>
             </plugin>
         </plugins>
+        </pluginManagement>
     </build>
     <reporting>
         <plugins>
