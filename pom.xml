@@ -25,12 +25,11 @@
         <module>eureka-server</module>
         <module>spring-cloud-gateway</module>
         <module>registration-service</module>
-        <module>authenticationbackend</module>
+        <module>authenticationService</module>
         <module>challenge-create-services</module>
         <module>Solution</module>
         <module>searchService</module>
         <module>FeedbackService</module>
-        <module>Spring_Mongo</module>
     </modules>
     <dependencies>
 
